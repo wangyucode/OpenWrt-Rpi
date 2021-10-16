@@ -11,7 +11,7 @@ name: Build Raspberry Pi 4 OpenWrt
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 18 * * *
+    - cron: 0 18 * * 1
 #  watch:
 #    types: started
 
@@ -92,8 +92,6 @@ jobs:
           mkdir -p files/lib/firmware/brcm/
           wget -q https://raw.githubusercontent.com/openwrt/cypress-nvram/master/brcmfmac43455-sdio.raspberrypi%2C4-model-b.txt -O files/lib/firmware/brcm/brcmfmac43455-sdio.raspberrypi,4-compute-module.txt
           ../$DIY_SH
-          ../scripts/preset-clash-core.sh armv8
-          ../scripts/preset-terminal-tools.sh
           ../scripts/enable-rpi4-wifi.sh
           make defconfig
 
@@ -201,16 +199,16 @@ jobs:
           name: bin-archive
           path: openwrt/bin
 
-      - name: Deploy Packages-Server
-        if: env.GENERATE_STATUS == 'success'
-        run: |
-          sudo ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-          mkdir -p server/web/snapshots/targets/$TARGET/$SUBTARGET
-          cp -r $OPENWRTROOT/bin/packages server/web/snapshots
-          cp -r $OPENWRTROOT/bin/targets/$TARGET/$SUBTARGET/packages server/web/snapshots/targets/$TARGET/$SUBTARGET
-          mv server packages-server
-          zip -qrm packages-server.zip packages-server
-          mv packages-server.zip $OPENWRTROOT/bin/targets/$TARGET/$SUBTARGET
+      # - name: Deploy Packages-Server
+      #   if: env.GENERATE_STATUS == 'success'
+      #   run: |
+      #     sudo ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+      #     mkdir -p server/web/snapshots/targets/$TARGET/$SUBTARGET
+      #     cp -r $OPENWRTROOT/bin/packages server/web/snapshots
+      #     cp -r $OPENWRTROOT/bin/targets/$TARGET/$SUBTARGET/packages server/web/snapshots/targets/$TARGET/$SUBTARGET
+      #     mv server packages-server
+      #     zip -qrm packages-server.zip packages-server
+      #     mv packages-server.zip $OPENWRTROOT/bin/targets/$TARGET/$SUBTARGET
 
       - name: Deploy Files To HostHatch Node
         id: hosthatch

@@ -17,7 +17,7 @@ git clone --depth=1 https://github.com/immortalwrt/packages -b openwrt-18.06 tem
 git clone --depth=1 https://github.com/immortalwrt/luci -b openwrt-18.06-k5.4 temp/luci
 
 # Add luci-app-adguardhome
-cp -r temp/luci/applications/luci-app-adguardhome luci/applications/luci-app-adguardhome
+# cp -r temp/luci/applications/luci-app-adguardhome luci/applications/luci-app-adguardhome
 cp -r temp/packages/net/adguardhome packages/net/adguardhome
 cp -r temp/packages/lang/node-yarn packages/lang/node-yarn
 cp -r temp/packages/devel/packr packages/devel/packr
@@ -34,8 +34,8 @@ cp -r temp/packages/utils/cpulimit packages/cpulimit
 cp -r temp/luci/applications/luci-app-eqos luci/applications/luci-app-eqos
 
 # Add luci-app-gowebdav
-cp -r temp/luci/applications/luci-app-gowebdav luci/applications/luci-app-gowebdav
-cp -r temp/packages/net/gowebdav packages/net/gowebdav
+# cp -r temp/luci/applications/luci-app-gowebdav luci/applications/luci-app-gowebdav
+# cp -r temp/packages/net/gowebdav packages/net/gowebdav
 
 # Add luci-proto-modemmanager
 cp -r temp/luci/protocols/luci-proto-modemmanager luci/protocols/luci-proto-modemmanager
@@ -47,8 +47,8 @@ cp -r temp/luci/applications/luci-app-netdata luci/applications/luci-app-netdata
 cp -r temp/packages/admin/netdata packages/admin/netdata
 
 # Add luci-app-smartdns
-cp -r temp/luci/applications/luci-app-smartdns luci/applications/luci-app-smartdns
-cp -r temp/packages/net/smartdns packages/net/smartdns
+# cp -r temp/luci/applications/luci-app-smartdns luci/applications/luci-app-smartdns
+# cp -r temp/packages/net/smartdns packages/net/smartdns
 
 # Add tmate
 cp -r temp/packages/net/tmate packages/net/tmate
@@ -58,7 +58,8 @@ cp -r temp/packages/libs/msgpack-c packages/libs/msgpack-c
 cp -r temp/packages/admin/gotop packages/admin/gotop
 
 # Add minieap
-cp -r temp/packages/net/minieap packages/net/minieap
+# cp -r temp/packages/net/minieap packages/net/minieap
+
 rm -rf temp
 popd
 
