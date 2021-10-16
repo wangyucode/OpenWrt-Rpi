@@ -18,10 +18,10 @@ mkdir package/community
 pushd package/community
 
 # Add Lienol's Packages
-git clone --depth=1 https://github.com/Lienol/openwrt-package
-rm -rf ../lean/luci-app-kodexplorer
-rm -rf openwrt-package/verysync
-rm -rf openwrt-package/luci-app-verysync
+#git clone --depth=1 https://github.com/Lienol/openwrt-package
+#rm -rf ../lean/luci-app-kodexplorer
+#rm -rf openwrt-package/verysync
+#rm -rf openwrt-package/luci-app-verysync
 
 # Add luci-app-passwall
 git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall
@@ -52,9 +52,9 @@ git clone --depth=1 https://github.com/lisaac/luci-app-dockerman
 git clone --depth=1 https://github.com/lisaac/luci-lib-docker
 
 # Add luci-app-wrtbwmon
-svn co https://github.com/sirpdboy/sirpdboy-package/trunk/luci-app-wrtbwmon
-svn co https://github.com/sirpdboy/sirpdboy-package/trunk/wrtbwmon
-rm -rf ../lean/luci-app-wrtbwmon
+#svn co https://github.com/sirpdboy/sirpdboy-package/trunk/luci-app-wrtbwmon
+#svn co https://github.com/sirpdboy/sirpdboy-package/trunk/wrtbwmon
+#rm -rf ../lean/luci-app-wrtbwmon
 
 # Add luci-app-unblockneteasemusic
 git clone --depth=1 https://github.com/immortalwrt/luci-app-unblockneteasemusic
@@ -95,10 +95,10 @@ sed -i "s/${orig_version}/${orig_version} (${date_version})/g" zzz-default-setti
 popd
 
 # Use Lienol's https-dns-proxy package
-pushd feeds/packages/net
-rm -rf https-dns-proxy
-svn co https://github.com/Lienol/openwrt-packages/trunk/net/https-dns-proxy
-popd
+#pushd feeds/packages/net
+#rm -rf https-dns-proxy
+#svn co https://github.com/Lienol/openwrt-packages/trunk/net/https-dns-proxy
+#popd
 
 # Use snapshots' syncthing package
 # pushd feeds/packages/utils
@@ -110,6 +110,9 @@ popd
 pushd package/kernel/mt76
 sed -i '/mt7662u_rom_patch.bin/a\\techo mt76-usb disable_usb_sg=1 > $\(1\)\/etc\/modules.d\/mt76-usb' Makefile
 popd
+
+# Remove some default packages
+sed -i 's/luci-app-ddns//g;s/luci-app-upnp//g;s/luci-app-adbyby-plus//g;s/luci-app-vsftpd//g;s/luci-app-ssr-plus//g;s/luci-app-vlmcsd//g;s/luci-app-nlbwmon//g;s/luci-app-accesscontrol//g' include/target.mk
 
 # Change default shell to zsh
 sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
