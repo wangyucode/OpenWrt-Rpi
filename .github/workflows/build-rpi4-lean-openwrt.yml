@@ -191,6 +191,7 @@ jobs:
           echo "TARGET=$(echo '${{needs.Build.outputs.TARGET}}')" >> $GITHUB_ENV
           echo "SUBTARGET=$(echo '${{needs.Build.outputs.SUBTARGET}}')" >> $GITHUB_ENV
           echo "GENERATE_STATUS=$(echo '${{needs.Build.outputs.GENERATE_STATUS}}')" >> $GITHUB_ENV
+          echo "DATETIME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 
       - name: Download Bin Folder
         uses: actions/download-artifact@v2
@@ -262,10 +263,8 @@ jobs:
         if: env.GENERATE_STATUS == 'success' && env.UPLOAD_RELEASE == 'true'
         with:
           name: OpenWrt-${{ env.TARGET }}-${{ env.SUBTARGET }}
-          allowUpdates: true
-          tag: ${{ env.TARGET }}-${{ env.SUBTARGET }}
-          commit: main
-          replacesArtifacts: true
+          tag: ${{ env.DATETIME }}
+          commit: dev
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: openwrt/bin/targets/${{ env.TARGET }}/${{ env.SUBTARGET }}/*
 
