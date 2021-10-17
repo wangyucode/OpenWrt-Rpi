@@ -54,7 +54,7 @@ git clone --depth=1 https://github.com/lisaac/luci-lib-docker
 # Add luci-app-wrtbwmon
 #svn co https://github.com/sirpdboy/sirpdboy-package/trunk/luci-app-wrtbwmon
 #svn co https://github.com/sirpdboy/sirpdboy-package/trunk/wrtbwmon
-#rm -rf ../lean/luci-app-wrtbwmon
+rm -rf ../lean/luci-app-wrtbwmon
 
 # Add luci-app-unblockneteasemusic
 git clone --depth=1 https://github.com/immortalwrt/luci-app-unblockneteasemusic
@@ -112,7 +112,7 @@ sed -i '/mt7662u_rom_patch.bin/a\\techo mt76-usb disable_usb_sg=1 > $\(1\)\/etc\
 popd
 
 # Remove some default packages
-sed -i 's/luci-app-ddns//g;s/luci-app-upnp//g;s/luci-app-adbyby-plus//g;s/luci-app-vsftpd//g;s/luci-app-ssr-plus//g;s/luci-app-vlmcsd//g;s/luci-app-nlbwmon//g;s/luci-app-accesscontrol//g' include/target.mk
+sed -i 's/luci-app-ddns//g;s/luci-app-upnp//g;s/luci-app-adbyby-plus//g;s/luci-app-ssr-plus//g;s/luci-app-vlmcsd//g;s/luci-app-accesscontrol//g' include/target.mk
 
 # Change default shell to zsh
-sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
+#sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
