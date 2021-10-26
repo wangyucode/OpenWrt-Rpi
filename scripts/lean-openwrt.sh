@@ -9,9 +9,9 @@
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 
 # Add luci-app-ssr-plus
-# pushd package/lean
-# git clone --depth=1 https://github.com/fw876/helloworld
-# popd
+pushd package/lean
+git clone --depth=1 https://github.com/fw876/helloworld
+popd
 
 # Clone community packages to package/community
 mkdir package/community
@@ -112,7 +112,7 @@ sed -i '/mt7662u_rom_patch.bin/a\\techo mt76-usb disable_usb_sg=1 > $\(1\)\/etc\
 popd
 
 # Remove some default packages
-sed -i 's/luci-app-ddns//g;s/luci-app-upnp//g;s/luci-app-adbyby-plus//g;s/luci-app-ssr-plus//g;s/luci-app-vlmcsd//g;s/luci-app-accesscontrol//g' include/target.mk
+sed -i 's/luci-app-ddns//g;s/luci-app-upnp//g;s/luci-app-adbyby-plus//g;s/luci-app-vlmcsd//g;s/luci-app-accesscontrol//g;s/luci-app-vsftpd//g' include/target.mk
 
 # Change default shell to zsh
 #sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
