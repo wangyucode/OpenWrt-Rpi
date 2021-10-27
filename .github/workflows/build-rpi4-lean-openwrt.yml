@@ -11,7 +11,7 @@ name: Build Raspberry Pi 4 OpenWrt
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 18 * * *
+    - cron: 0 18 1 9 *
 #  watch:
 #    types: started
 
@@ -21,7 +21,7 @@ env:
   CONFIG_FILE: config/bcm27xx/bcm2711.config
   DIY_SH: scripts/lean-openwrt.sh
   WEBROOT: /data/dnmp/www/openwrt.cc
-  UPLOAD_RELEASE: false
+  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -92,8 +92,6 @@ jobs:
           mkdir -p files/lib/firmware/brcm/
           wget -q https://raw.githubusercontent.com/openwrt/cypress-nvram/master/brcmfmac43455-sdio.raspberrypi%2C4-model-b.txt -O files/lib/firmware/brcm/brcmfmac43455-sdio.raspberrypi,4-compute-module.txt
           ../$DIY_SH
-          ../scripts/preset-clash-core.sh armv8
-          ../scripts/preset-terminal-tools.sh
           ../scripts/enable-rpi4-wifi.sh
           make defconfig
 
@@ -193,6 +191,7 @@ jobs:
           echo "TARGET=$(echo '${{needs.Build.outputs.TARGET}}')" >> $GITHUB_ENV
           echo "SUBTARGET=$(echo '${{needs.Build.outputs.SUBTARGET}}')" >> $GITHUB_ENV
           echo "GENERATE_STATUS=$(echo '${{needs.Build.outputs.GENERATE_STATUS}}')" >> $GITHUB_ENV
+          echo "DATETIME=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 
       - name: Download Bin Folder
         uses: actions/download-artifact@v2
@@ -201,16 +200,16 @@ jobs:
           name: bin-archive
           path: openwrt/bin
 
-      - name: Deploy Packages-Server
-        if: env.GENERATE_STATUS == 'success'
-        run: |
-          sudo ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-          mkdir -p server/web/snapshots/targets/$TARGET/$SUBTARGET
-          cp -r $OPENWRTROOT/bin/packages server/web/snapshots
-          cp -r $OPENWRTROOT/bin/targets/$TARGET/$SUBTARGET/packages server/web/snapshots/targets/$TARGET/$SUBTARGET
-          mv server packages-server
-          zip -qrm packages-server.zip packages-server
-          mv packages-server.zip $OPENWRTROOT/bin/targets/$TARGET/$SUBTARGET
+      # - name: Deploy Packages-Server
+      #   if: env.GENERATE_STATUS == 'success'
+      #   run: |
+      #     sudo ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+      #     mkdir -p server/web/snapshots/targets/$TARGET/$SUBTARGET
+      #     cp -r $OPENWRTROOT/bin/packages server/web/snapshots
+      #     cp -r $OPENWRTROOT/bin/targets/$TARGET/$SUBTARGET/packages server/web/snapshots/targets/$TARGET/$SUBTARGET
+      #     mv server packages-server
+      #     zip -qrm packages-server.zip packages-server
+      #     mv packages-server.zip $OPENWRTROOT/bin/targets/$TARGET/$SUBTARGET
 
       - name: Deploy Files To HostHatch Node
         id: hosthatch
@@ -264,10 +263,8 @@ jobs:
         if: env.GENERATE_STATUS == 'success' && env.UPLOAD_RELEASE == 'true'
         with:
           name: OpenWrt-${{ env.TARGET }}-${{ env.SUBTARGET }}
-          allowUpdates: true
-          tag: ${{ env.TARGET }}-${{ env.SUBTARGET }}
-          commit: main
-          replacesArtifacts: true
+          tag: ${{ env.DATETIME }}
+          commit: dev
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: openwrt/bin/targets/${{ env.TARGET }}/${{ env.SUBTARGET }}/*
 
